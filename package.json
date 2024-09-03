@@ -1,0 +1,24 @@
+{
+  "name": "lambda_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "deploy": "serverless deploy",
+    "start": "serverless offline"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1687.0",
+    "serverless": "^3.39.0",
+    "serverless-plugin-typescript": "^2.1.5"
+  },
+  "devDependencies": {
+    "@types/aws-sdk": "^2.7.0",
+    "@types/node": "^22.5.2",
+    "typescript": "^5.5.4"
+  }
+}

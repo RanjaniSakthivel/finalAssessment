@@ -1,0 +1,31 @@
+service: Assessment 
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  memorySize: 512
+  timeout: 15
+  stage: dev
+  region: us-east-1 
+
+functions:
+  fetchDetails:
+    handler: dist/handler.handler
+    events:
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+    environment:
+      port: 3000
+      baseDir: ''
+      shipping_details_bucket: works
+      csv_file_name: addresses.csv
+      accessKeyId: ${env:AWS_ACCESS_KEY_ID}
+      secretAccessKey: ${env:AWS_SECRET_ACCESS_KEY}
+      response_csv_file_name: tracker.csv
+      region: 'us-east-1'
+
+package:
+  exclude:
+    - .git/**
