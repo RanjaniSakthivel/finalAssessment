@@ -23,7 +23,7 @@ functions:
       csv_file_name: customers_shipping_addresses.csv
       accessKeyId: ${env:AWS_ACCESS_KEY_ID}
       secretAccessKey: ${env:AWS_SECRET_ACCESS_KEY}
-      response_csv_file_name: tracker.csv
+      response_csv_file_name: response_tracker.csv
       region: 'us-east-1'
 
 package:
