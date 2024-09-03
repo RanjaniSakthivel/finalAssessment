@@ -1,4 +1,4 @@
-service: Assessment 
+service: Assessment-demo
 
 provider:
   name: aws
