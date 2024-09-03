@@ -3,6 +3,7 @@ import AWS from 'aws-sdk';
 
 export const handler: APIGatewayProxyHandler = async (event) => {
   const s3 = new AWS.S3();
+  console.log(process.env.shipping_details_bucket)
   const bucket = process.env.shipping_details_bucket || 'default-bucket';
   const fileName = process.env.csv_file_name || 'default.csv';
 
