@@ -11,12 +11,12 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     const data = await s3.getObject({ Bucket: bucket, Key: fileName }).promise();
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: 'File retrieved successfully', data: data.Body.toString() }),
+      body: JSON.stringify({ message: 'File retrieved successfully'}),
     };
   } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: 'Error retrieving file', error: error.message }),
+      body: JSON.stringify({ message: 'Error retrieving file'}),
     };
   }
 };
