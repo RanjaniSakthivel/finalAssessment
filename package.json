@@ -17,6 +17,7 @@
     "serverless-plugin-typescript": "^2.1.5"
   },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.145",
     "@types/aws-sdk": "^2.7.0",
     "@types/node": "^22.5.2",
     "typescript": "^5.5.4"
