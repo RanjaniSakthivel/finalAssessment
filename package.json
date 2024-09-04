@@ -6,20 +6,28 @@
   "scripts": {
     "build": "tsc",
     "deploy": "serverless deploy",
-    "start": "serverless offline"
+    "start": "serverless offline",
+    "dev": "env-cmd -f .env nodemon --exec ts-node src/local.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.1687.0",
-    "serverless": "^3.39.0",
-    "serverless-plugin-typescript": "^2.1.5"
+    "@types/aws-lambda": "^8.10.143",
+    "@types/aws-sdk": "^2.7.0",
+    "@types/express": "^4.17.21",
+    "aws-serverless-express": "^3.4.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "fast-csv": "^5.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.145",
-    "@types/aws-sdk": "^2.7.0",
-    "@types/node": "^22.5.2",
-    "typescript": "^5.5.4"
+    "@types/aws-serverless-express": "^3.3.9",
+    "nodemon": "^3.1.4",
+    "serverless": "^3.33.0",
+    "serverless-plugin-layers": "^2.3.8",
+    "serverless-plugin-optimize": "^4.2.1-rc.1"
   }
 }

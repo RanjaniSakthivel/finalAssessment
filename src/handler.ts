@@ -1,23 +1,9 @@
-import { APIGatewayProxyHandler } from 'aws-lambda';
-import AWS from 'aws-sdk';
+import awsServerlessExpress from 'aws-serverless-express';
+import app from './app';
+import { APIGatewayEvent, Context, Callback } from 'aws-lambda';
 
-export const handler: APIGatewayProxyHandler = async (event) => {
-  const s3 = new AWS.S3();
-  console.log(process.env.shipping_details_bucket)
-  const bucket = process.env.shipping_details_bucket || 'default-bucket';
-  const fileName = process.env.csv_file_name || 'default.csv';
+const server = awsServerlessExpress.createServer(app);
 
-  try {
-    // Simulate S3 operation
-    const data = await s3.getObject({ Bucket: bucket, Key: fileName }).promise();
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: 'File retrieved successfully'}),
-    };
-  } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: 'Error retrieving file'}),
-    };
-  }
+export const handler = (event: APIGatewayEvent, context: Context, callback: Callback) => {
+  awsServerlessExpress.proxy(server, event, context);
 };
