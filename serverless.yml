@@ -19,7 +19,7 @@ functions:
     environment:
       port: 3000
       baseDir: ''
-      shipping_details_bucket: customer-shipping-details
+      shipping_details_bucket: shipping-details
       csv_file_name: customers_shipping_addresses.csv
       accessKeyId: ${env:AWS_ACCESS_KEY_ID}
       secretAccessKey: ${env:AWS_SECRET_ACCESS_KEY}
@@ -31,7 +31,7 @@ resources:
     MyS3Bucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: customer-shipping-details
+        BucketName: shipping-details
         AccessControl: Private
         VersioningConfiguration:
           Status: Enabled
