@@ -10,7 +10,7 @@ provider:
 
 functions:
   fetchDetails:
-    handler: dist/handler.handler
+    handler: src/handler.handler
     events:
       - http:
           path: /{proxy+}
