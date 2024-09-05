@@ -77,7 +77,6 @@ export const writeResponseToCSV = async (response: { customerId: string | undefi
             }).promise();
             existingContent = result.Body?.toString('utf-8') || '';
         } catch (err) {
-            // Type assertion to any since TypeScript cannot infer the type of the error
             const error = err as AWS.AWSError;
 
             if (error.code === 'NoSuchKey') {

@@ -26,6 +26,16 @@ functions:
       response_csv_file_name: response_tracker.csv
       region: 'us-east-1'
 
+resources:
+  Resources:
+    MyS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: shipping-details
+        AccessControl: Private
+        VersioningConfiguration:
+          Status: Enabled
+
 package:
   exclude:
     - .git/**
