@@ -32,7 +32,7 @@ resources:
     MyS3Bucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: customers-details
+        BucketName: customers-address-details
         AccessControl: Private
         VersioningConfiguration:
           Status: Enabled
