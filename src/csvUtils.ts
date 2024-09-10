@@ -17,7 +17,7 @@ AWS.config.update({
 const S3 = new AWS.S3();
 
 // Define your bucket and file key
-const bucketName = process.env.shipping_details_bucket || '';
+const bucketName = process.env.customer_details_bucket || '';
 
 const response_csv = process.env.response_csv_file_name || '';
 
