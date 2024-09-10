@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import { readShippingDetailsCSV, writeResponseToCSV } from './csvUtils';
-import { ResponseFormat } from './types';
-import { Customer } from './types';
+import { ResponseFormat, Customer, AddressType } from './types';
 
 const app = express();
 
@@ -35,7 +34,7 @@ const serverErrorResponseJson =  (customerId: string): ResponseFormat => ({
 app.post('/customer', async (req: Request, res: Response) => {
     try {
         const customers: Customer[] = req.body.data;
-        let isShippingAddressAvailable: boolean= true;
+        let isAddressAvailable: boolean= true;
         //checks whether the customer data is present in req body
         if (!customers || !Array.isArray(customers)) {
             await writeResponseToCSV(failureResponseJson('N/A'));
@@ -46,28 +45,41 @@ app.post('/customer', async (req: Request, res: Response) => {
         const results = await Promise.all(customers.map(async (customer: Customer) => {
             const customerID = customer.customerId;
             if (!customerID) {
-                isShippingAddressAvailable = false;
+                isAddressAvailable = false;
                 await writeResponseToCSV(failureResponseJson(customerID));
                 return customer;
             }
+            if( customer.shipping && customer.billing){
+                return customer;
+            }
+
+            if (!customer.billing) {
+                const billingDetails = await readShippingDetailsCSV(customer, AddressType.Billing);
+                if (billingDetails) {
+                    customer.billing = billingDetails.address;
+                } else {
+                    isAddressAvailable = false;
+                    await writeResponseToCSV(failureResponseJson(customerID));
+                    customer.billing = null;
+                }
+            }
             
             if (!customer.shipping) {
-                const shippingDetails = await readShippingDetailsCSV(customerID);
+                const shippingDetails = await readShippingDetailsCSV(customer, AddressType.Shipping);
                 if (shippingDetails) {
-                    customer.shipping = shippingDetails.shippingAddress;
-                    return customer;
+                    customer.shipping = shippingDetails.address;
                 } else {
-                    isShippingAddressAvailable= false;
+                    isAddressAvailable= false;
                     await writeResponseToCSV(failureResponseJson(customerID));
                     customer.shipping = null;
-                    return customer;
                 }
-            } else {
-              return customer;
-            }
+            } 
+            return customer;
+
+            
         }));
 
-        if(isShippingAddressAvailable){
+        if(isAddressAvailable){
             await writeResponseToCSV(successResponseJson('N/A'));
         }
         res.status(200).send(results);

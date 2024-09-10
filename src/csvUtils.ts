@@ -3,7 +3,7 @@ import { Readable } from 'stream';
 import AWS from 'aws-sdk';
 import { parse } from 'fast-csv';
 import path from 'path';
-import { Address, ShippingAddress, customerRow } from './types';
+import { Address, customerRow, Customer, AddressDetails, AddressType } from './types';
 
 // to use the file stored in local machine in c drive
 const baseDir = process.env.baseDir || 'C:\\Users\\ranjani.sakthivel\\Downloads';
@@ -18,11 +18,23 @@ const S3 = new AWS.S3();
 
 // Define your bucket and file key
 const bucketName = process.env.shipping_details_bucket || '';
-const fileKey = process.env.csv_file_name || '';
+
 const response_csv = process.env.response_csv_file_name || '';
 
+const getFileKeyForAddressType = (addressType: AddressType): string => {
+    switch (addressType) {
+      case AddressType.Shipping:
+        return process.env.shipping_address_file_name || '';
+      case AddressType.Billing:
+        return process.env.billing_address_file_name || '';
+      default:
+        throw new Error('Invalid address type');
+    }
+  };
+
 // logic to read the CSV file if shipping address is missing for a customer in request body
-export const readShippingDetailsCSV = async (customerID: string): Promise<{ shippingAddress: ShippingAddress } | null> => {
+export const readShippingDetailsCSV = async (customer: Customer, addressType: AddressType): Promise<{ address: Address } | null> => {
+    const fileKey = getFileKeyForAddressType(addressType);
     const params: AWS.S3.GetObjectRequest = {
         Bucket: bucketName,
         Key: fileKey
@@ -43,9 +55,9 @@ export const readShippingDetailsCSV = async (customerID: string): Promise<{ ship
             .pipe(parse({ headers: true }))
             .on('data', (row: customerRow) => results.push(row))
             .on('end', () => {
-                const customerDetails = results.find(row => row.customerId === customerID);
+                const customerDetails = results.find(row => row.customerId === customer.customerId);
                 if (customerDetails) {
-                    const address: Address = {
+                    const address: AddressDetails = {
                         line1: customerDetails.line1 || '',
                         line2: customerDetails.line2 || '',
                         city: customerDetails.city || '',
@@ -53,7 +65,7 @@ export const readShippingDetailsCSV = async (customerID: string): Promise<{ ship
                         postalCode: customerDetails.postalCode || '',
                         country: customerDetails.country || ''
                     };
-                    resolve({ shippingAddress: { address } });
+                    resolve({ address: { address } });
                 } else {
                     resolve(null);
                 }
@@ -61,6 +73,7 @@ export const readShippingDetailsCSV = async (customerID: string): Promise<{ ship
             .on('error', reject);
     });
 };
+
 
 export const writeResponseToCSV = async (response: { customerId: string | undefined, status: number, message: string }) => {
     // Create the new row for the CSV

@@ -1,4 +1,4 @@
-export interface Address {
+export interface AddressDetails {
     line1: string;
     line2?: string;
     city: string;
@@ -7,16 +7,16 @@ export interface Address {
     country: string;
 }
 
-export interface ShippingAddress {
-    address: Address;
+export interface Address {
+    address: AddressDetails;
 }
 
 export interface Customer {
     customerId: string;
     contactNumber: string;
     email: string;
-    billingAddress: ShippingAddress;
-    shipping: ShippingAddress | null;
+    billing: Address | null;
+    shipping: Address | null;
     products: Array<{
         productId: string;
         productName: string;
@@ -40,3 +40,9 @@ export interface ResponseFormat {
     status: number;
     message: string;
 }
+
+export enum AddressType {
+    Shipping = 'shipping',
+    Billing = 'billing'
+  }
+  

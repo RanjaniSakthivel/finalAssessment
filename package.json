@@ -7,7 +7,8 @@
     "build": "tsc",
     "deploy": "serverless deploy",
     "start": "serverless offline",
-    "dev": "env-cmd -f .env nodemon --exec ts-node src/local.ts"
+    "dev": "env-cmd -f .env nodemon --exec ts-node src/local.ts",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -25,9 +26,14 @@
   },
   "devDependencies": {
     "@types/aws-serverless-express": "^3.3.9",
+    "@types/jest": "^29.5.12",
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.4",
     "serverless": "^3.33.0",
     "serverless-plugin-layers": "^2.3.8",
-    "serverless-plugin-optimize": "^4.2.1-rc.1"
+    "serverless-plugin-optimize": "^4.2.1-rc.1",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5"
   }
 }
