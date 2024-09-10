@@ -19,8 +19,9 @@ functions:
     environment:
       port: 3000
       baseDir: ''
-      customer_details_bucket: customer-shipping-details
-      csv_file_name: customers_shipping_addresses.csv
+      customer_details_bucket : customers-details
+      shipping_address_file_name : customers_shipping_addresses.csv
+      billing_address_file_name : customers_billing_addresses.csv            
       accessKeyId: ${env:AWS_ACCESS_KEY_ID}
       secretAccessKey: ${env:AWS_SECRET_ACCESS_KEY}
       response_csv_file_name: response_tracker.csv
